@@ -10,7 +10,7 @@ class ProductPage(BasePage):
     def add_product_to_basket(self):
         self.should_be_name()
         self.should_be_price()
-        self.should_be_decription()
+        self.should_be_description()
         self.should_be_add_button()
         self.should_not_be_success_message()
 
@@ -32,7 +32,7 @@ class ProductPage(BasePage):
         assert self.is_element_present(*ProductPageLocators.PRODUCT_PRICE), "Price of product not found"
         self.product_price = self.browser.find_element(*ProductPageLocators.PRODUCT_PRICE).text
 
-    def should_be_decription(self):
+    def should_be_description(self):
         assert self.is_element_present(*ProductPageLocators.PRODUCT_DESCRIPTION), "Description of product not found"
         self.product_description = self.browser.find_element(*ProductPageLocators.PRODUCT_DESCRIPTION).text
 
