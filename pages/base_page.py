@@ -1,5 +1,6 @@
 from selenium.webdriver.chrome.webdriver import RemoteWebDriver
 
+
 class BasePage:
     def __init__(self, browser, url):
         self.browser = browser

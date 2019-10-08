@@ -7,6 +7,7 @@ def test_guest_goto_login_page(browser):
     page.open()
     page.go_to_login_page()
 
+
 # def go_to_login_page(browser):
 #     link = browser.find_element_by_css_selector("#login_link")
 #     link.click()
