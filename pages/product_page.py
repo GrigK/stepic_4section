@@ -13,7 +13,7 @@ class ProductPage(BasePage):
         self.should_be_decription()
         self.should_be_add_button()
 
-        btn = self.browser.find_element(*ProductPageLocators.BTN_ADD_TO_BUSKET)
+        btn = self.browser.find_element(*ProductPageLocators.BTN_ADD_TO_BASKET)
         btn.click()
         self.solve_quiz_and_get_code()
 
