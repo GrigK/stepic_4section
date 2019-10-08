@@ -12,6 +12,7 @@ class ProductPage(BasePage):
         self.should_be_price()
         self.should_be_decription()
         self.should_be_add_button()
+        self.should_not_be_success_message()
 
         btn = self.browser.find_element(*ProductPageLocators.BTN_ADD_TO_BASKET)
         btn.click()
@@ -19,6 +20,9 @@ class ProductPage(BasePage):
 
         self.should_be_success()
         self.check_success_message()
+
+    def should_not_be_success_message(self):
+        assert self.is_not_element_present(*ProductPageLocators.SUCCESS_MESSAGES), "Wrong show success message"
 
     def should_be_name(self):
         assert self.is_element_present(*ProductPageLocators.PRODUCT_NAME), "Name of product not found"
