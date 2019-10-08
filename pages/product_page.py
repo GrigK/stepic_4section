@@ -5,7 +5,7 @@ from .locators import ProductPageLocators
 class ProductPage(BasePage):
     product_name = ''
     product_price = ''
-    product_decription = ''
+    product_description = ''
 
     def add_product_to_basket(self):
         self.should_be_name()
@@ -34,7 +34,7 @@ class ProductPage(BasePage):
 
     def should_be_decription(self):
         assert self.is_element_present(*ProductPageLocators.PRODUCT_DESCRIPTION), "Description of product not found"
-        self.product_decription = self.browser.find_element(*ProductPageLocators.PRODUCT_DESCRIPTION).text
+        self.product_description = self.browser.find_element(*ProductPageLocators.PRODUCT_DESCRIPTION).text
 
     def should_be_success(self):
         assert self.is_element_present(*ProductPageLocators.SUCCESS_MESSAGES), "Message of Success added product in " \
