@@ -7,7 +7,7 @@ class ProductPage(BasePage):
     product_price = ''
     prodict_decription = ''
 
-    def add_product_to_busket(self):
+    def add_product_to_basket(self):
         self.should_be_name()
         self.should_be_price()
         self.should_be_decription()
@@ -34,10 +34,10 @@ class ProductPage(BasePage):
 
     def should_be_success(self):
         assert self.is_element_present(*ProductPageLocators.SUCCESS_MESSAGES), "Message of Success added product in " \
-                                                                               "busket not found "
+                                                                               "basket not found "
 
     def should_be_add_button(self):
-        assert self.is_element_present(*ProductPageLocators.BTN_ADD_TO_BUSKET), "Button 'Add to busket' is not " \
+        assert self.is_element_present(*ProductPageLocators.BTN_ADD_TO_BUSKET), "Button 'Add to basket' is not " \
                                                                                 "presented "
 
     def check_success_message(self):
