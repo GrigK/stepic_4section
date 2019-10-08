@@ -20,6 +20,8 @@ def test_guest_goto_login_page(browser):
     login_page = LoginPage(browser, browser.current_url)
     login_page.should_be_login_page()
 
+def test_product_page_add_to_busket(browser):
+    link = "http://selenium1py.pythonanywhere.com/catalogue/the-shellcoders-handbook_209/?promo=newYear"
 
 """
 Рассмотрим страницу товара в интернет магазине http://selenium1py.pythonanywhere.com/catalogue/the-shellcoders-handbook_209/.
