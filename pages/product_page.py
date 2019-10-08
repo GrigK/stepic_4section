@@ -14,15 +14,21 @@ class ProductPage(BasePage):
         self.should_be_add_button()
         self.should_not_be_success_message()
 
-        btn = self.browser.find_element(*ProductPageLocators.BTN_ADD_TO_BASKET)
-        btn.click()
+        self.add_product_to_basket()
         self.solve_quiz_and_get_code()
 
         self.should_be_success()
         self.check_success_message()
 
+    def add_product_to_basket(self):
+        btn = self.browser.find_element(*ProductPageLocators.BTN_ADD_TO_BASKET)
+        btn.click()
+
     def should_not_be_success_message(self):
         assert self.is_not_element_present(*ProductPageLocators.SUCCESS_MESSAGES), "Wrong show success message"
+
+    def is_disappered_success_message(self):
+        assert self.is_disappeared(*ProductPageLocators.SUCCESS_MESSAGES), "Wrong show success message"
 
     def should_be_name(self):
         assert self.is_element_present(*ProductPageLocators.PRODUCT_NAME), "Name of product not found"

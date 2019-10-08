@@ -5,9 +5,11 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import NoSuchElementException, NoAlertPresentException, TimeoutException
 from selenium.webdriver.chrome.webdriver import RemoteWebDriver
 
+from .locators import BasePageLocators
+
 
 class BasePage:
-    def __init__(self, browser: RemoteWebDriver, url: str, timeout: int = 10):
+    def __init__(self, browser: RemoteWebDriver, url: str, timeout: int = 4):
         self.browser = browser
         self.url = url
         self.browser.implicitly_wait(timeout)
@@ -42,6 +44,14 @@ class BasePage:
             return False
 
         return True
+
+    # общие для всех страниц методы
+    def go_to_login_page(self):
+        link = self.browser.find_element(*BasePageLocators.LOGIN_LINK)
+        link.click()
+
+    def should_be_login_link(self):
+        assert self.is_element_present(*BasePageLocators.LOGIN_LINK), "Login link is not presented"
 
     def solve_quiz_and_get_code(self):
         alert = self.browser.switch_to.alert
