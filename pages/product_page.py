@@ -46,7 +46,3 @@ class ProductPage(BasePage):
 
         assert self.product_name == msg_lst[0].text, "Wrong name product added to basket"
         assert self.product_price == msg_lst[2].text, "Wrong price product added to basket"
-
-
-
-
