@@ -16,7 +16,7 @@ def pytest_addoption(parser):
         pytest -s -v --tb=short --browser_name=chrome --language=en test_conftest.py
     :param parser:
     """
-    parser.addoption('--browser_name', action='store', default=None,
+    parser.addoption('--browser_name', action='store', default='chrome',
                      help="Choose browser: chrome or firefox")
     parser.addoption('--language', action='store', default='en',
                      help="Choose language browser: ru,en,es... (default - en)")
