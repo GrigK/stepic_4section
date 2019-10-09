@@ -9,23 +9,29 @@ from .locators import BasePageLocators
 
 
 class BasePage:
-    def __init__(self, browser: RemoteWebDriver, url: str, timeout: int = 4):
+    def __init__(self, browser: RemoteWebDriver, url: str, timeout: int = 10):
         self.browser = browser
         self.url = url
-        self.browser.implicitly_wait(timeout)
+        # не используем т.к. timeout используется в проверке наличия элемента
+        # self.browser.implicitly_wait(timeout)
 
     def open(self):
         self.browser.get(self.url)
 
-    # проверка на наличие элемента
-    def is_element_present(self, how, what):
+    # проверка на наличие элемента с ожиданием timeout
+    def is_element_present(self, how, what, timeout=4):
         try:
-            self.browser.find_element(how, what)
+            # self.browser.find_element(how, what)
+            WebDriverWait(self.browser, timeout). \
+                until(EC.presence_of_element_located((how, what)))
+        except TimeoutException:
+            return False
         except NoSuchElementException:
             return False
+
         return True
 
-    # проверка на отсутствие элемента
+    # проверка на отсутствие элемента с ожиданием timeout
     def is_not_element_present(self, how, what, timeout=4):
         try:
             WebDriverWait(self.browser, timeout). \
@@ -35,7 +41,7 @@ class BasePage:
 
         return False
 
-    # проверка на исчезновение элемента в течении некоторого времени
+    # проверка на исчезновение элемента в течении timeout
     def is_disappeared(self, how, what, timeout=4):
         try:
             WebDriverWait(self.browser, timeout, 1, TimeoutException). \
