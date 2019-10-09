@@ -7,7 +7,7 @@ class ProductPage(BasePage):
     product_price = ''
     product_description = ''
 
-    def add_product_to_basket(self):
+    def add_product_to_basket_and_calculate(self):
         self.should_be_name()
         self.should_be_price()
         self.should_be_description()
