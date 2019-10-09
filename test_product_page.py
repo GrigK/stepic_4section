@@ -1,3 +1,4 @@
+from faker import Faker
 import pytest
 
 from .pages.product_page import ProductPage
@@ -66,21 +67,22 @@ from .pages.basket_page import BasketPage
 #     login_page = LoginPage(browser, browser.current_url)
 #     login_page.should_be_login_page()
 
-def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
-    """
-    Гость открывает страницу товара
-    Переходит в корзину по кнопке в шапке
-    Ожидаем, что в корзине нет товаров
-    Ожидаем, что есть текст о том что корзина пуста
-    """
-    link = "http://selenium1py.pythonanywhere.com/catalogue/the-shellcoders-handbook_209/?promo=newYear"
-    page = ProductPage(browser, link)
-    page.open()
-    page.should_be_btn_basket()
-    page.go_to_basket_page()
+# def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
+#     """
+#     Гость открывает страницу товара
+#     Переходит в корзину по кнопке в шапке
+#     Ожидаем, что в корзине нет товаров
+#     Ожидаем, что есть текст о том что корзина пуста
+#     """
+#     link = "http://selenium1py.pythonanywhere.com/catalogue/the-shellcoders-handbook_209/?promo=newYear"
+#     page = ProductPage(browser, link)
+#     page.open()
+#     page.should_be_btn_basket()
+#     page.go_to_basket_page()
+#
+#     basket_page = BasketPage(browser, browser.current_url)
+#     basket_page.should_be_empty_basket()
 
-    basket_page = BasketPage(browser, browser.current_url)
-    basket_page.should_be_empty_basket()
 
 """
 @pytest.mark.login
@@ -104,3 +106,41 @@ class TestLoginFromProductPage():
         page = ProductPage(browser, self.link)
         # дальше обычная реализация теста
 """
+
+
+class TestUserAddToBasketFromProductPage:
+    link = "http://selenium1py.pythonanywhere.com/catalogue/the-shellcoders-handbook_209/"
+    password = 'Qw21eR4t50'
+    faker: Faker = Faker(locale='ru-RU')
+
+    @pytest.fixture(scope="function", autouse=True)
+    def setup(self, browser):
+        """
+            открыть страницу регистрации
+            зарегистрировать нового пользователя
+            проверить, что пользователь залогинен
+
+            так обычно не делают в setup
+        """
+        page = ProductPage(browser, self.link)
+        page.open()
+        page.go_to_login_page()
+
+        login_page = LoginPage(browser, browser.current_url)
+        login_page.should_be_login_page()
+        login_page.register_new_user(self.faker.email(), self.password)
+        login_page.should_be_authorized_user()
+
+    def test_user_cant_see_success_message(self, browser):
+        page = ProductPage(browser, self.link)
+        page.open()
+        page.should_be_btn_basket()
+        page.go_to_basket_page()
+
+        basket_page = BasketPage(browser, browser.current_url)
+        basket_page.should_be_empty_basket()
+
+    def test_user_can_add_product_to_basket(self, browser):
+        page = ProductPage(browser, self.link)
+        page.open()
+        page.add_product_to_basket()
