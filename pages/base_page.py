@@ -1,4 +1,5 @@
 import math
+from datetime import datetime
 
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -9,47 +10,64 @@ from .locators import BasePageLocators
 
 
 class BasePage:
-    def __init__(self, browser: RemoteWebDriver, url: str, timeout: int = 10):
+    def __init__(self, browser: RemoteWebDriver, url: str):
         self.browser = browser
         self.url = url
         # не используем т.к. timeout используется в проверке наличия элемента
-        # self.browser.implicitly_wait(timeout)
+        # self.browser.implicitly_wait(10)
 
     def open(self):
         self.browser.get(self.url)
 
     # проверка на наличие элемента с ожиданием timeout
-    def is_element_present(self, how, what, timeout=4):
+    def is_element_present(self, how, what, timeout=4, screenshot=True):
         try:
             # self.browser.find_element(how, what)
             WebDriverWait(self.browser, timeout). \
                 until(EC.presence_of_element_located((how, what)))
+
         except TimeoutException:
+            if screenshot:
+                self.take_screenshot()
             return False
+
         except NoSuchElementException:
+            if screenshot:
+                self.take_screenshot()
             return False
 
         return True
 
     # проверка на отсутствие элемента с ожиданием timeout
-    def is_not_element_present(self, how, what, timeout=4):
+    def is_not_element_present(self, how, what, timeout=4, screenshot=True):
         try:
             WebDriverWait(self.browser, timeout). \
                 until(EC.presence_of_element_located((how, what)))
         except TimeoutException:
+            if screenshot:
+                self.take_screenshot()
+
             return True
 
         return False
 
     # проверка на исчезновение элемента в течении timeout
-    def is_disappeared(self, how, what, timeout=4):
+    def is_disappeared(self, how, what, timeout=4, screenshot=True):
         try:
             WebDriverWait(self.browser, timeout, 1, TimeoutException). \
                 until_not(EC.presence_of_element_located((how, what)))
         except TimeoutException:
+            if screenshot:
+                self.take_screenshot()
             return False
 
         return True
+
+    def take_screenshot(self):
+        now = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+        namefile = f"screenshot-{now}.png"
+        self.browser.get_screenshot_as_file(namefile)
+        print(f"Taked screenshot: {namefile}")
 
     # общие для всех страниц методы
     def go_to_basket_page(self):
